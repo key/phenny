@@ -10,8 +10,8 @@ http://inamidst.com/phenny/
 import re, urllib
 import web
 
-wikiuri = 'http://en.wikipedia.org/wiki/%s'
-wikisearch = 'http://en.wikipedia.org/wiki/Special:Search?' \
+wikiuri = 'http://ja.wikipedia.org/wiki/%s'
+wikisearch = 'http://ja.wikipedia.org/wiki/Special:Search?' \
                     + 'search=%s&fulltext=Search'
 
 r_tr = re.compile(r'(?ims)<tr[^>]*>.*?</tr>')
@@ -53,10 +53,10 @@ def search(term):
    else: term = term.decode('utf-8')
 
    term = term.replace('_', ' ')
-   try: uri = search.result('site:en.wikipedia.org %s' % term)
+   try: uri = search.result('site:ja.wikipedia.org %s' % term)
    except IndexError: return term
    if uri: 
-      return uri[len('http://en.wikipedia.org/wiki/'):]
+      return uri[len('http://ja.wikipedia.org/wiki/'):]
    else: return term
 
 def wikipedia(term, last=False): 
@@ -139,10 +139,10 @@ def wikipedia(term, last=False):
    term = term.decode('utf-8').encode('utf-8')
    return sentence + ' - ' + (wikiuri % term)
 
-def wik(phenny, input): 
+def pedia(phenny, input): 
    origterm = input.groups()[1]
    if not origterm: 
-      return phenny.say('Perhaps you meant ".wik Zen"?')
+      return phenny.say('Perhaps you meant ".pedia Zen"?')
    origterm = origterm.encode('utf-8')
 
    term = urllib.unquote(origterm)
@@ -151,15 +151,15 @@ def wik(phenny, input):
 
    try: result = wikipedia(term)
    except IOError: 
-      error = "Can't connect to en.wikipedia.org (%s)" % (wikiuri % term)
+      error = "Can't connect to ja.wikipedia.org (%s)" % (wikiuri % term)
       return phenny.say(error)
 
    if result is not None: 
       phenny.say(result)
    else: phenny.say('Can\'t find anything in Wikipedia for "%s".' % origterm)
 
-wik.commands = ['wik']
-wik.priority = 'high'
+pedia.commands = ['pedia']
+pedia.priority = 'high'
 
 if __name__ == '__main__': 
    print __doc__.strip()
